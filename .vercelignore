@@ -1,0 +1,26 @@
+# Backend files (not needed for frontend build)
+backend/
+scripts/
+middleware/
+routes/
+config/
+*.sql
+
+# Git and other files
+.git/
+.gitignore
+README.md
+DEPLOYMENT.md
+render.yaml
+
+# Node modules (will be installed fresh)
+node_modules/
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Build outputs
+build/
+dist/
