@@ -49,10 +49,10 @@ app.post('/api/setup-database', async (req, res) => {
     const { execSync } = require('child_process');
     
     console.log('Running database migration...');
-    execSync('cd backend && npm run db:migrate', { stdio: 'inherit' });
+    execSync('npm run db:migrate', { stdio: 'inherit' });
     
     console.log('Running database seeding...');
-    execSync('cd backend && npm run db:seed', { stdio: 'inherit' });
+    execSync('npm run db:seed', { stdio: 'inherit' });
     
     console.log('Database setup completed successfully!');
     res.status(200).json({ 
@@ -77,10 +77,10 @@ if (process.env.NODE_ENV === 'production') {
       // Import and run migration
       const { execSync } = require('child_process');
       console.log('Running database migration...');
-      execSync('cd backend && npm run db:migrate', { stdio: 'inherit' });
+      execSync('npm run db:migrate', { stdio: 'inherit' });
       
       console.log('Running database seeding...');
-      execSync('cd backend && npm run db:seed', { stdio: 'inherit' });
+      execSync('npm run db:seed', { stdio: 'inherit' });
       
       console.log('Database setup completed successfully!');
     } catch (error) {
