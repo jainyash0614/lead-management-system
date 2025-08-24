@@ -3,7 +3,7 @@ const config = {
     apiUrl: 'http://localhost:5001',
   },
   production: {
-    apiUrl: 'https://your-backend-name.onrender.com', // Replace with your actual Render URL
+    apiUrl: 'https://lead-management-system-1ta8.onrender.com',
   },
 };
 
