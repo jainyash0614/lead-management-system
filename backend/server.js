@@ -41,6 +41,58 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
+// Database setup endpoint (for manual triggering)
+app.post('/api/setup-database', async (req, res) => {
+  try {
+    console.log('Manual database setup triggered...');
+    
+    const { execSync } = require('child_process');
+    
+    console.log('Running database migration...');
+    execSync('cd backend && npm run db:migrate', { stdio: 'inherit' });
+    
+    console.log('Running database seeding...');
+    execSync('cd backend && npm run db:seed', { stdio: 'inherit' });
+    
+    console.log('Database setup completed successfully!');
+    res.status(200).json({ 
+      message: 'Database setup completed successfully',
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Database setup failed:', error.message);
+    res.status(500).json({ 
+      error: 'Database setup failed',
+      details: error.message
+    });
+  }
+});
+
+// Auto-setup database in production
+if (process.env.NODE_ENV === 'production') {
+  const setupDatabase = async () => {
+    try {
+      console.log('Setting up database in production...');
+      
+      // Import and run migration
+      const { execSync } = require('child_process');
+      console.log('Running database migration...');
+      execSync('cd backend && npm run db:migrate', { stdio: 'inherit' });
+      
+      console.log('Running database seeding...');
+      execSync('cd backend && npm run db:seed', { stdio: 'inherit' });
+      
+      console.log('Database setup completed successfully!');
+    } catch (error) {
+      console.error('Database setup failed:', error.message);
+      // Don't exit - let the server continue running
+    }
+  };
+  
+  // Run database setup after a short delay
+  setTimeout(setupDatabase, 5000);
+}
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/leads', authenticateToken, leadRoutes);
