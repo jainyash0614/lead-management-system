@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config/config';
 
 const AuthContext = createContext();
 
@@ -25,7 +26,7 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthStatus = async () => {
     try {
-      const response = await axios.get('/api/auth/me');
+      const response = await axios.get(`${API_BASE_URL}/api/auth/me`);
       setUser(response.data.user);
     } catch (error) {
       setUser(null);
@@ -36,7 +37,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('/api/auth/login', { email, password });
+      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, { email, password });
       setUser(response.data.user);
       return { success: true, data: response.data };
     } catch (error) {
@@ -49,7 +50,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const response = await axios.post('/api/auth/register', userData);
+      const response = await axios.post(`${API_BASE_URL}/api/auth/register`, userData);
       setUser(response.data.user);
       return { success: true, data: response.data };
     } catch (error) {
@@ -62,7 +63,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post('/api/auth/logout');
+      await axios.post(`${API_BASE_URL}/api/auth/logout`);
     } catch (error) {
       console.error('Logout error:', error);
     } finally {

@@ -6,6 +6,7 @@ import ErrorBoundary from '../components/ErrorBoundary';
 import { Plus, LogOut, Filter, RefreshCw } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { API_BASE_URL } from '../config/config';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
@@ -178,7 +179,7 @@ const Dashboard = () => {
         ...filters
       });
 
-      const response = await axios.get(`/api/leads?${params}`);
+      const response = await axios.get(`${API_BASE_URL}/api/leads?${params}`);
       
       setLeads(response.data.data);
       setPagination({
@@ -204,10 +205,10 @@ const Dashboard = () => {
   const handleLeadSubmit = async (leadData) => {
     try {
       if (editingLead) {
-        await axios.put(`/api/leads/${editingLead.id}`, leadData);
+        await axios.put(`${API_BASE_URL}/api/leads/${editingLead.id}`, leadData);
         toast.success('Lead updated successfully');
       } else {
-        await axios.post('/api/leads', leadData);
+        await axios.post(`${API_BASE_URL}/api/leads`, leadData);
         toast.success('Lead created successfully');
       }
       setShowLeadDialog(false);
@@ -235,7 +236,7 @@ const Dashboard = () => {
   const handleDeleteLead = async (leadId) => {
     if (window.confirm('Are you sure you want to delete this lead?')) {
       try {
-        await axios.delete(`/api/leads/${leadId}`);
+        await axios.delete(`${API_BASE_URL}/api/leads/${leadId}`);
         toast.success('Lead deleted successfully');
         fetchLeads();
       } catch (error) {
